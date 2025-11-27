@@ -1,5 +1,8 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.resource.ResourceDto;
+import com.example.backend.dto.resource.ResourceInputDto;
+import com.example.backend.mapper.ResourceMapper;
 import com.example.backend.model.Resource;
 import com.example.backend.service.ResourceService;
 import org.springframework.http.ResponseEntity;
@@ -12,26 +15,29 @@ import java.util.List;
 public class ResourceController {
 
     private final ResourceService service;
+    private final ResourceMapper mapper;
 
-    public ResourceController(ResourceService service) {
+    public ResourceController(ResourceService service, ResourceMapper mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
     @GetMapping
-    public ResponseEntity<List<Resource>> findAll() {
-        return ResponseEntity.ok(service.findAll());
+    public ResponseEntity<List<ResourceDto>> findAll() {
+        return ResponseEntity.ok(mapper.toDto(service.findAll()));
     }
 
     @GetMapping("/{resourceId}")
-    public ResponseEntity<Resource> findById(@PathVariable Long resourceId) {
+    public ResponseEntity<ResourceDto> findById(@PathVariable Long resourceId) {
         return service.findById(resourceId)
-                .map(ResponseEntity::ok)
+                .map(resource -> ResponseEntity.ok(mapper.toDto(resource)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Resource> save(@RequestBody Resource resource) {
-        return ResponseEntity.ok(service.save(resource));
+    public ResponseEntity<ResourceDto> save(@RequestBody ResourceInputDto resourceInputDto) {
+        Resource savedResource = service.save(mapper.fromDto(resourceInputDto));
+        return ResponseEntity.ok(mapper.toDto(savedResource));
     }
 
     @DeleteMapping("/{resourceId}")

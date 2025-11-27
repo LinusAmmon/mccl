@@ -1,4 +1,4 @@
-package com.example.backend.dto;
+package com.example.backend.dto.itemMaterial;
 
 public record ItemMaterialDto(
         Long resourceId,

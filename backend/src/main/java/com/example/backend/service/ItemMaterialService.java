@@ -1,6 +1,6 @@
 package com.example.backend.service;
 
-import com.example.backend.dto.ItemMaterialDto;
+import com.example.backend.dto.itemMaterial.ItemMaterialDto;
 import com.example.backend.model.ItemMaterial;
 import com.example.backend.repository.ItemMaterialRepository;
 import org.springframework.stereotype.Service;

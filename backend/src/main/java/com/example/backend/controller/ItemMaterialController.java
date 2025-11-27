@@ -1,6 +1,6 @@
 package com.example.backend.controller;
 
-import com.example.backend.dto.ItemMaterialDto;
+import com.example.backend.dto.itemMaterial.ItemMaterialDto;
 import com.example.backend.model.ItemMaterial;
 import com.example.backend.service.ItemMaterialService;
 import org.springframework.http.ResponseEntity;

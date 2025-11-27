@@ -1,5 +1,8 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.item.ItemDto;
+import com.example.backend.dto.item.ItemInputDto;
+import com.example.backend.mapper.ItemMapper;
 import com.example.backend.model.Item;
 import com.example.backend.service.ItemService;
 import org.springframework.http.ResponseEntity;
@@ -12,26 +15,29 @@ import java.util.List;
 public class ItemController {
 
     private final ItemService service;
+    private final ItemMapper mapper;
 
-    public ItemController(ItemService service) {
+    public ItemController(ItemService service, ItemMapper mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
     @GetMapping
-    public ResponseEntity<List<Item>> findAll() {
-        return ResponseEntity.ok(service.findAll());
+    public ResponseEntity<List<ItemDto>> findAll() {
+        return ResponseEntity.ok(mapper.toDto(service.findAll()));
     }
 
     @GetMapping("/{itemId}")
-    public ResponseEntity<Item> findById(@PathVariable Long itemId) {
+    public ResponseEntity<ItemDto> findById(@PathVariable Long itemId) {
         return service.findById(itemId)
-                .map(ResponseEntity::ok)
+                .map(item -> ResponseEntity.ok(mapper.toDto(item)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Item> save(@RequestBody Item item) {
-        return ResponseEntity.ok(service.save(item));
+    public ResponseEntity<ItemDto> save(@RequestBody ItemInputDto item) {
+        Item savedItem = service.save(mapper.fromDto(item));
+        return ResponseEntity.ok(mapper.toDto(savedItem));
     }
 
     @DeleteMapping("/{itemId}")
