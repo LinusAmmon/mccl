@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/items")
@@ -24,7 +23,7 @@ public class ItemController {
     }
 
     @GetMapping("/{itemId}")
-    public ResponseEntity<Item> findById(@PathVariable UUID itemId) {
+    public ResponseEntity<Item> findById(@PathVariable Long itemId) {
         return service.findById(itemId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -36,7 +35,7 @@ public class ItemController {
     }
 
     @DeleteMapping("/{itemId}")
-    public ResponseEntity<Void> deleteById(@PathVariable UUID itemId) {
+    public ResponseEntity<Void> deleteById(@PathVariable Long itemId) {
         return service.deleteById(itemId)
                 ? ResponseEntity.noContent().build()
                 : ResponseEntity.notFound().build();

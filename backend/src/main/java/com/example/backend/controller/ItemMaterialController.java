@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/items/{itemId}/materials")
@@ -20,17 +19,17 @@ public class ItemMaterialController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ItemMaterialDto>> findByItemId(@PathVariable UUID itemId) {
+    public ResponseEntity<List<ItemMaterialDto>> findByItemId(@PathVariable Long itemId) {
         return ResponseEntity.ok(service.findByItemId(itemId));
     }
 
     @PutMapping
-    public ResponseEntity<ItemMaterial> save(@PathVariable UUID itemId, @RequestBody ItemMaterialDto dto) {
+    public ResponseEntity<ItemMaterial> save(@PathVariable Long itemId, @RequestBody ItemMaterialDto dto) {
         return ResponseEntity.ok(service.save(itemId, dto.resourceId(), dto.amount()));
     }
 
     @DeleteMapping()
-    public ResponseEntity<Void> deleteByItemId(@PathVariable UUID itemId) {
+    public ResponseEntity<Void> deleteByItemId(@PathVariable Long itemId) {
         return service.deleteByItemId(itemId)
                 ? ResponseEntity.noContent().build()
                 : ResponseEntity.notFound().build();

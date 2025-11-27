@@ -2,15 +2,13 @@ package com.example.backend.model;
 
 import jakarta.persistence.*;
 
-import java.util.UUID;
-
 @Entity
 @Table(name = "resource")
 public class Resource {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private Long id;
 
     @Column(nullable = false, unique = true)
     private String name;
@@ -22,16 +20,16 @@ public class Resource {
         this.name = name;
     }
 
-    public Resource(UUID id, String name) {
+    public Resource(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

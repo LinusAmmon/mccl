@@ -1,16 +1,14 @@
 package com.example.backend.model;
 
-import java.util.UUID;
-
 public class ItemMaterialId {
 
-    private UUID itemId;
-    private UUID resourceId;
+    private Long itemId;
+    private Long resourceId;
 
     public ItemMaterialId() {
     }
 
-    public ItemMaterialId(UUID itemId, UUID resourceId) {
+    public ItemMaterialId(Long itemId, Long resourceId) {
         this.itemId = itemId;
         this.resourceId = resourceId;
     }

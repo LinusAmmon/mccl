@@ -2,18 +2,16 @@ package com.example.backend.model;
 
 import jakarta.persistence.*;
 
-import java.util.UUID;
-
 @Entity
 @Table(name = "item_material")
 @IdClass(ItemMaterialId.class)
 public class ItemMaterial {
 
     @Id
-    private UUID itemId;
+    private Long itemId;
 
     @Id
-    private UUID resourceId;
+    private Long resourceId;
 
     @Column(nullable = false)
     private long amount;
@@ -21,25 +19,25 @@ public class ItemMaterial {
     public ItemMaterial() {
     }
 
-    public ItemMaterial(UUID itemId, UUID resourceId, long amount) {
+    public ItemMaterial(Long itemId, Long resourceId, long amount) {
         this.itemId = itemId;
         this.resourceId = resourceId;
         this.amount = amount;
     }
 
-    public UUID getItemId() {
+    public Long getItemId() {
         return itemId;
     }
 
-    public void setItemId(UUID itemId) {
+    public void setItemId(Long itemId) {
         this.itemId = itemId;
     }
 
-    public UUID getResourceId() {
+    public Long getResourceId() {
         return resourceId;
     }
 
-    public void setResourceId(UUID resourceId) {
+    public void setResourceId(Long resourceId) {
         this.resourceId = resourceId;
     }
 

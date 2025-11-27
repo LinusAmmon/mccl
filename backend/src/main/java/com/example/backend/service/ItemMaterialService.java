@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class ItemMaterialService {
@@ -18,19 +17,19 @@ public class ItemMaterialService {
         this.itemMaterialRepository = itemMaterialRepository;
     }
 
-    public List<ItemMaterialDto> findByItemId(UUID id) {
+    public List<ItemMaterialDto> findByItemId(Long itemId) {
         List<ItemMaterialDto> response = new ArrayList<>();
-        List<ItemMaterial> itemMaterials = itemMaterialRepository.findByItemId(id);
+        List<ItemMaterial> itemMaterials = itemMaterialRepository.findByItemId(itemId);
         itemMaterials.forEach(itemMaterial ->
                 response.add(new ItemMaterialDto(itemMaterial.getResourceId(), itemMaterial.getAmount())));
         return response;
     }
 
-    public ItemMaterial save(UUID itemId, UUID resourceId, long amount) {
+    public ItemMaterial save(Long itemId, Long resourceId, Long amount) {
         return itemMaterialRepository.save(new ItemMaterial(itemId, resourceId, amount));
     }
 
-    public boolean deleteByItemId(UUID itemId) {
+    public boolean deleteByItemId(Long itemId) {
         if (findByItemId(itemId).isEmpty()) {
             return false;
         }

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class ItemService {
@@ -26,7 +25,7 @@ public class ItemService {
         return itemRepository.findAll();
     }
 
-    public Optional<Item> findById(UUID itemId) {
+    public Optional<Item> findById(Long itemId) {
         return itemRepository.findById(itemId);
     }
 
@@ -35,7 +34,7 @@ public class ItemService {
     }
 
     @Transactional
-    public boolean deleteById(UUID itemId) {
+    public boolean deleteById(Long itemId) {
         if (findById(itemId).isEmpty()) {
             return false;
         }
