@@ -9,4 +9,5 @@ import java.util.UUID;
 public interface ItemMaterialRepository extends JpaRepository<ItemMaterial, UUID> {
     List<ItemMaterial> findByItemId(UUID itemId);
     void deleteByItemId(UUID itemId);
+    void deleteByResourceId(UUID resourceId);
 }
