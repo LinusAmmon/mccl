@@ -5,6 +5,7 @@ import com.example.backend.dto.resource.ResourceInputDto;
 import com.example.backend.mapper.ResourceMapper;
 import com.example.backend.model.Resource;
 import com.example.backend.service.ResourceService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,9 +36,15 @@ public class ResourceController {
     }
 
     @PostMapping
-    public ResponseEntity<ResourceDto> save(@RequestBody ResourceInputDto resourceInputDto) {
-        Resource savedResource = service.save(mapper.fromDto(resourceInputDto));
-        return ResponseEntity.ok(mapper.toDto(savedResource));
+    public ResponseEntity<ResourceDto> create(@RequestBody ResourceInputDto resourceInputDto) {
+        Resource createdResource = service.create(mapper.fromDto(resourceInputDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDto(createdResource));
+    }
+
+    @PutMapping("/{resourceId}")
+    public ResponseEntity<ResourceDto> update(@PathVariable Long resourceId, @RequestBody ResourceInputDto resourceInputDto) {
+        Resource updatedResource = service.update(resourceId, mapper.fromDto(resourceInputDto));
+        return ResponseEntity.ok(mapper.toDto(updatedResource));
     }
 
     @DeleteMapping("/{resourceId}")

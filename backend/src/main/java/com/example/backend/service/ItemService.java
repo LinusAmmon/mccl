@@ -29,8 +29,17 @@ public class ItemService {
         return itemRepository.findById(itemId);
     }
 
-    public Item save(Item item) {
+    public Item create(Item item) {
         return itemRepository.save(item);
+    }
+
+    public Item update(Long itemId, Item item) {
+        if (itemRepository.existsById(itemId)) {
+            item.setId(itemId);
+            return itemRepository.save(item);
+        } else {
+            throw new RuntimeException("Item not found");
+        }
     }
 
     @Transactional

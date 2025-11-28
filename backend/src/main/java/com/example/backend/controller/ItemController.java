@@ -5,6 +5,7 @@ import com.example.backend.dto.item.ItemInputDto;
 import com.example.backend.mapper.ItemMapper;
 import com.example.backend.model.Item;
 import com.example.backend.service.ItemService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,9 +36,15 @@ public class ItemController {
     }
 
     @PostMapping
-    public ResponseEntity<ItemDto> save(@RequestBody ItemInputDto item) {
-        Item savedItem = service.save(mapper.fromDto(item));
-        return ResponseEntity.ok(mapper.toDto(savedItem));
+    public ResponseEntity<ItemDto> create(@RequestBody ItemInputDto item) {
+        Item createdItem = service.create(mapper.fromDto(item));
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDto(createdItem));
+    }
+
+    @PutMapping("/{itemId}")
+    public ResponseEntity<ItemDto> update(@PathVariable Long itemId, @RequestBody ItemInputDto item) {
+        Item updatedItem = service.update(itemId, mapper.fromDto(item));
+        return ResponseEntity.ok(mapper.toDto(updatedItem));
     }
 
     @DeleteMapping("/{itemId}")

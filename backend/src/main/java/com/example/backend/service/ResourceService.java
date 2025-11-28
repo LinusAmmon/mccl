@@ -29,8 +29,17 @@ public class ResourceService {
         return resourceRepository.findById(resourceId);
     }
 
-    public Resource save(Resource resource) {
+    public Resource create(Resource resource) {
         return resourceRepository.save(resource);
+    }
+
+    public Resource update(Long resourceId, Resource resource) {
+        if (resourceRepository.existsById(resourceId)) {
+            resource.setId(resourceId);
+            return resourceRepository.save(resource);
+        } else {
+            throw new RuntimeException("Resource not found");
+        }
     }
 
     @Transactional
