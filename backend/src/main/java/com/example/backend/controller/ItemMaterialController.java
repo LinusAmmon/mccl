@@ -34,7 +34,7 @@ public class ItemMaterialController {
 
     @DeleteMapping("/{resourceId}")
     public ResponseEntity<Void> delete(@PathVariable Long itemId, @PathVariable Long resourceId) {
-        service.deleteByItemIdAndResourceId(itemId, resourceId);
+        service.delete(itemId, resourceId);
         return ResponseEntity.noContent().build();
     }
 }

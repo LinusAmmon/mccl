@@ -33,6 +33,7 @@ public class ItemMaterialService {
         if (existing == null) {
             throw new RuntimeException("ItemMaterial not found");
         }
-        itemMaterialRepository.delete(existing);
+
+        itemMaterialRepository.deleteById(new ItemMaterialId(itemId, resourceId));
     }
 }
