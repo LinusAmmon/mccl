@@ -4,10 +4,11 @@ import com.example.backend.model.Item;
 import com.example.backend.repository.ItemMaterialRepository;
 import com.example.backend.repository.ItemRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ItemService {
@@ -15,8 +16,7 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final ItemMaterialRepository itemMaterialRepository;
 
-    public ItemService(ItemRepository itemRepository,
-                       ItemMaterialRepository itemMaterialRepository) {
+    public ItemService(ItemRepository itemRepository, ItemMaterialRepository itemMaterialRepository) {
         this.itemRepository = itemRepository;
         this.itemMaterialRepository = itemMaterialRepository;
     }
@@ -25,8 +25,8 @@ public class ItemService {
         return itemRepository.findAll();
     }
 
-    public Optional<Item> findById(Long itemId) {
-        return itemRepository.findById(itemId);
+    public Item findById(Long itemId) {
+        return itemRepository.findById(itemId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found"));
     }
 
     public Item create(Item item) {
@@ -38,17 +38,17 @@ public class ItemService {
             item.setId(itemId);
             return itemRepository.save(item);
         } else {
-            throw new RuntimeException("Item not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found");
         }
     }
 
     @Transactional
-    public boolean deleteById(Long itemId) {
-        if (findById(itemId).isEmpty()) {
-            return false;
+    public void delete(Long id) {
+        if (itemRepository.findById(id).isPresent()) {
+            itemRepository.deleteById(id);
+            itemMaterialRepository.deleteByItemId(id);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found");
         }
-        itemMaterialRepository.deleteByItemId(itemId);
-        itemRepository.deleteById(itemId);
-        return true;
     }
 }

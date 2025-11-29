@@ -30,9 +30,7 @@ public class ResourceController {
 
     @GetMapping("/{resourceId}")
     public ResponseEntity<ResourceDto> findById(@PathVariable Long resourceId) {
-        return service.findById(resourceId)
-                .map(resource -> ResponseEntity.ok(mapper.toDto(resource)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok(mapper.toDto(service.findById(resourceId)));
     }
 
     @PostMapping
@@ -48,9 +46,8 @@ public class ResourceController {
     }
 
     @DeleteMapping("/{resourceId}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long resourceId) {
-        return service.deleteById(resourceId)
-                ? ResponseEntity.noContent().build()
-                : ResponseEntity.notFound().build();
+    public ResponseEntity<Void> delete(@PathVariable Long resourceId) {
+        service.delete(resourceId);
+        return ResponseEntity.noContent().build();
     }
 }

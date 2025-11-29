@@ -4,10 +4,11 @@ import com.example.backend.model.Resource;
 import com.example.backend.repository.ItemMaterialRepository;
 import com.example.backend.repository.ResourceRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ResourceService {
@@ -15,8 +16,7 @@ public class ResourceService {
     private final ResourceRepository resourceRepository;
     private final ItemMaterialRepository itemMaterialRepository;
 
-    public ResourceService(ResourceRepository resourceRepository,
-                           ItemMaterialRepository itemMaterialRepository) {
+    public ResourceService(ResourceRepository resourceRepository, ItemMaterialRepository itemMaterialRepository) {
         this.resourceRepository = resourceRepository;
         this.itemMaterialRepository = itemMaterialRepository;
     }
@@ -25,30 +25,30 @@ public class ResourceService {
         return resourceRepository.findAll();
     }
 
-    public Optional<Resource> findById(Long resourceId) {
-        return resourceRepository.findById(resourceId);
+    public Resource findById(Long id) {
+        return resourceRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     public Resource create(Resource resource) {
         return resourceRepository.save(resource);
     }
 
-    public Resource update(Long resourceId, Resource resource) {
-        if (resourceRepository.existsById(resourceId)) {
-            resource.setId(resourceId);
+    public Resource update(Long id, Resource resource) {
+        if (resourceRepository.existsById(id)) {
+            resource.setId(id);
             return resourceRepository.save(resource);
         } else {
-            throw new RuntimeException("Resource not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 
     @Transactional
-    public boolean deleteById(Long resourceId) {
-        if (findById(resourceId).isEmpty()) {
-            return false;
+    public void delete(Long id) {
+        if (resourceRepository.findById(id).isPresent()) {
+            resourceRepository.deleteById(id);
+            itemMaterialRepository.deleteByResourceId(id);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        itemMaterialRepository.deleteByResourceId(resourceId);
-        resourceRepository.deleteById(resourceId);
-        return true;
     }
 }

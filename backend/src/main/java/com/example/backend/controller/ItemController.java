@@ -30,9 +30,7 @@ public class ItemController {
 
     @GetMapping("/{itemId}")
     public ResponseEntity<ItemDto> findById(@PathVariable Long itemId) {
-        return service.findById(itemId)
-                .map(item -> ResponseEntity.ok(mapper.toDto(item)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok(mapper.toDto(service.findById(itemId)));
     }
 
     @PostMapping
@@ -48,9 +46,8 @@ public class ItemController {
     }
 
     @DeleteMapping("/{itemId}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long itemId) {
-        return service.deleteById(itemId)
-                ? ResponseEntity.noContent().build()
-                : ResponseEntity.notFound().build();
+    public ResponseEntity<Void> delete(@PathVariable Long itemId) {
+        service.delete(itemId);
+        return ResponseEntity.noContent().build();
     }
 }
