@@ -14,10 +14,6 @@ public class ItemMapper {
         return models.stream().map(this::toDto).toList();
     }
 
-    public List<Item> fromDto(List<ItemInputDto> dtos) {
-        return dtos.stream().map(this::fromDto).toList();
-    }
-
     public ItemDto toDto(Item model) {
         return new ItemDto(model.getId(), model.getName());
     }

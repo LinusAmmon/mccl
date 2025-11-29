@@ -14,10 +14,6 @@ public class ResourceMapper {
         return models.stream().map(this::toDto).toList();
     }
 
-    public List<Resource> fromDto(List<ResourceInputDto> dtos) {
-        return dtos.stream().map(this::fromDto).toList();
-    }
-
     public ResourceDto toDto(Resource model) {
         return new ResourceDto(model.getId(), model.getName());
     }
